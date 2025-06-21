@@ -4,36 +4,40 @@ import { addFeed } from "../Utils/feedSlice";
 import axios from "axios";
 import { useEffect } from "react";
 import UserCard from "./UserCard";
-import { useNavigate } from "react-router-dom";
+import { useCallback } from "react";
 import type { RootState } from "../Utils/appStore";
 
 const Feed = () => {
   const feed = useSelector((store: RootState) => store.feed);
-  const user = useSelector((store: RootState) => store.user);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
-  // Redirect to login if user is not authenticated
-  useEffect(() => {
-    if (!user) {
-      navigate("/login");
+  const getFeed = useCallback(async () => {
+    try {
+      const res = await axios.get(API_URL + "/feed", {
+        withCredentials: true,
+      });
+      dispatch(addFeed(res.data.data));
+    } catch (err) {
+      console.log("errror :" + err);
     }
-  }, [user, navigate]);
+  }, [dispatch]);
 
   useEffect(() => {
-    const getFeed = async () => {
-      if (Array.isArray(feed) && feed.length > 0) return;
-      try {
-        const res = await axios.get(API_URL + "/feed", {
-          withCredentials: true,
-        });
-        dispatch(addFeed(res.data.data));
-      } catch (err) {
-        console.log("errror :" + err);
-      }
-    };
-    getFeed();
-  }, [feed, navigate, dispatch]);
+    if (!Array.isArray(feed) || feed.length === 0) {
+      getFeed();
+    }
+  }, [feed, getFeed]);
+
+  //This function is called after a user is reviewed
+  const handleReview = async (userId: string) => {
+    const newFeed = feed.filter((user) => user._id !== userId);
+    dispatch(addFeed(newFeed));
+
+    //Fetch more users if feed is running low
+    if (newFeed.length < 5) {
+      await getFeed();
+    }
+  };
 
   return Array.isArray(feed) && feed.length > 0 ? (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
@@ -49,7 +53,9 @@ const Feed = () => {
           <div className="flex justify-center items-center gap-4 mt-4">
             <div className="flex items-center gap-2 bg-white/20 px-4 py-2 rounded-full">
               <div className="w-3 h-3 bg-green-400 rounded-full"></div>
-              <span className="text-sm font-medium">{feed.length} developers available</span>
+              <span className="text-sm font-medium">
+                {feed.length} developers available
+              </span>
             </div>
           </div>
         </div>
@@ -59,17 +65,22 @@ const Feed = () => {
       <div className="max-w-7xl mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pb-8">
           {feed.map((x) => (
-            <div key={x._id} className="transform hover:scale-105 transition-transform duration-300">
-              <UserCard user={x} />
+            <div
+              key={x._id}
+              className="transform hover:scale-105 transition-transform duration-300"
+            >
+              <UserCard user={x} onReview={() => handleReview(x._id)} />
             </div>
           ))}
         </div>
-        
+
         {/* Bottom Stats */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
             <div>
-              <div className="text-3xl font-bold text-blue-600">{feed.length}</div>
+              <div className="text-3xl font-bold text-blue-600">
+                {feed.length}
+              </div>
               <div className="text-gray-600">Total Developers</div>
             </div>
             <div>
@@ -88,8 +99,12 @@ const Feed = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center">
       <div className="text-center">
         <div className="text-6xl mb-4">🤔</div>
-        <h2 className="text-3xl font-bold text-gray-800 mb-2">No Developers Found</h2>
-        <p className="text-gray-600 text-lg">Check back later for new connections!</p>
+        <h2 className="text-3xl font-bold text-gray-800 mb-2">
+          No Developers Found
+        </h2>
+        <p className="text-gray-600 text-lg">
+          Check back later for new connections!
+        </p>
       </div>
     </div>
   );

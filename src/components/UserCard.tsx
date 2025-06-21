@@ -12,7 +12,12 @@ interface User {
   // add other fields as needed
 }
 
-const UserCard = ({ user }: { user: User }) => {
+type UserCardProps = {
+  user: User;
+  onReview?: () => void; // <-- add this
+};
+
+const UserCard = ({ user, onReview }: UserCardProps) => {
   const dispatch = useDispatch();
   const handlerequest = async (_id: string, status: string) => {
     try {
@@ -22,6 +27,7 @@ const UserCard = ({ user }: { user: User }) => {
         { withCredentials: true }
       );
       dispatch(removeFeed(user._id));
+      if (onReview) onReview(); // <-- call onReview if provided
     } catch (err) {
       console.log(err);
       // Optionally handle error
@@ -29,7 +35,7 @@ const UserCard = ({ user }: { user: User }) => {
   };
 
   const { name, photo, bio, age, gender, _id } = user;
-  if(user==null){
+  if (user == null) {
     return <div>No user found</div>;
   }
   return (
@@ -57,8 +63,10 @@ const UserCard = ({ user }: { user: User }) => {
             {/* Details Section */}
             <div className="md:w-2/3 p-6 flex flex-col justify-between">
               <div>
-                <h2 className="text-2xl font-bold text-gray-800 mb-2">{name}</h2>
-                
+                <h2 className="text-2xl font-bold text-gray-800 mb-2">
+                  {name}
+                </h2>
+
                 <div className="flex items-center gap-4 mb-3 text-gray-600">
                   {age && (
                     <div className="flex items-center gap-1">
@@ -87,8 +95,16 @@ const UserCard = ({ user }: { user: User }) => {
                     handlerequest(_id, "interested");
                   }}
                 >
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+                  <svg
+                    className="w-5 h-5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                   Interested
                 </button>
@@ -98,8 +114,16 @@ const UserCard = ({ user }: { user: User }) => {
                     handlerequest(_id, "ignored");
                   }}
                 >
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                  <svg
+                    className="w-5 h-5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                   Ignore
                 </button>

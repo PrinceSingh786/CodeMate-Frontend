@@ -2,21 +2,27 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { API_URL } from "../Utils/constants";
 import axios from "axios";
+import { addUser } from "../Utils/userSlice";
+import { useDispatch } from "react-redux";
 const SignIn = () => {
   const [toast, settoast] = useState(false);
   const [name, setname] = useState("");
-  
+  const dispatch = useDispatch();
   const [email, setemail] = useState("");
   const [password, setPassword] = useState("");
   const [error, seterror] = useState("");
   const navigate = useNavigate();
   const handleSignIn = async () => {
     try {
-      await axios.post(
+      const res = await axios.post(
         API_URL + "/signup",
         { name, email, password },
         { withCredentials: true }
       );
+
+      //save user to localStorage and redux
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+      dispatch(addUser(res.data.data));
       seterror("");
       settoast(true);
       setTimeout(() => {
@@ -36,7 +42,7 @@ const SignIn = () => {
             <span>Data saved successfully.</span>
           </div>
           <div className="alert alert-success bg-amber-400">
-            <span>Please Login Again .</span>
+            <span>Redirecting to the homepage .</span>
           </div>
         </div>
       )}
@@ -74,16 +80,15 @@ const SignIn = () => {
           className="input w-full "
           placeholder="Password"
         />
-       
 
         {error && <h1 className="text-xl bg-red-600">{error}</h1>}
-        <Link
-          to="/signup"
+        <button
+          type="button"
           onClick={handleSignIn}
           className="btn text-xl btn-neutral flex justify-center bg-black"
         >
           Sign Up
-        </Link>
+        </button>
         <h1 className=" flex justify-center font-bold text-2xl my-5">Or</h1>
         <Link
           to="/login"

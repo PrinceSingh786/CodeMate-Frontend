@@ -27,7 +27,7 @@ const AppContent = () => {
       <NavBar />
       <Routes>
         <Route path="/" element={<Body />}>
-          <Route index element={<Feed />} />
+          <Route path="/" element={<Feed />} />
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<SignIn />} />
           <Route path="connections" element={<Connections />} />
