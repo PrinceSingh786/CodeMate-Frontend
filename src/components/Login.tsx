@@ -7,8 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { API_URL } from "../Utils/constants.tsx";
 import { Link } from "react-router-dom";
 const Login = () => {
-  const [email, setEmail] = useState("prince.adams44@example.com");
-  const [password, setPassword] = useState("K3vinPrince");
+  const [email, setEmail] = useState("shyam.adams44@example.com");
+  const [password, setPassword] = useState("K3vinshyam");
   const [error, setError] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -43,7 +43,13 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center bg-repeat-round bg-center min-h-screen" style={{backgroundImage:"url('https://t3.ftcdn.net/jpg/08/68/51/04/360_F_868510427_vsvN67LV1zSmLMyXMOFG05tRCmTAj1xL.jpg')"}}>
+    <div
+      className="flex justify-center bg-repeat-round bg-center min-h-screen"
+      style={{
+        backgroundImage:
+          "url('https://t3.ftcdn.net/jpg/08/68/51/04/360_F_868510427_vsvN67LV1zSmLMyXMOFG05tRCmTAj1xL.jpg')",
+      }}
+    >
       <fieldset className="fieldset bg-white bg-opacity-95 border-base-300 rounded-box h-8/12 w-8/12 md:w-4/12 my-20 border p-4">
         <div className=" flex justify-center">
           <legend className="fieldset-legend font-bold  p-2 text-3xl my-2 ">

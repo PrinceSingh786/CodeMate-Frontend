@@ -5,6 +5,9 @@ import { API_URL } from "../Utils/constants";
 import { useDispatch } from "react-redux";
 import { removeUser } from "../Utils/userSlice";
 import type { RootState } from "../Utils/appStore";
+import { clearFeed } from "../Utils/feedSlice"; // <-- add this import
+import { clearRequest } from "../Utils/requestSlice";
+import { removeConnection } from "../Utils/connectionsSlice";
 interface User {
   name: string;
   photo?: string;
@@ -23,6 +26,9 @@ const NavBar = () => {
     } finally {
       // Always clear user state regardless of API response
       dispatch(removeUser());
+      dispatch(clearFeed());
+      dispatch(clearRequest());
+      dispatch(removeConnection());
       Navigate("/login");
     }
   };
@@ -35,25 +41,40 @@ const NavBar = () => {
             CodeMate{" "}
           </Link>
         </div>
-        
+
         {/* Desktop Navigation - Show on larger screens */}
         <div className="hidden lg:flex items-center gap-4">
           {user ? (
             <>
               <p className="text-xl font-bold">Welcome {user.name} !</p>
-              <Link to="/" className="btn font-bold bg-blue-500 text-white btn-ghost text-lg">
+              <Link
+                to="/"
+                className="btn font-bold bg-blue-500 text-white btn-ghost text-lg"
+              >
                 Feeds
               </Link>
-              <Link to="/connections" className="btn font-bold bg-blue-500 text-white btn-ghost text-lg">
+              <Link
+                to="/connections"
+                className="btn font-bold bg-blue-500 text-white btn-ghost text-lg"
+              >
                 Connections
               </Link>
-              <Link to="/requests" className="btn btn-ghost bg-blue-500 text-white text-lg">
+              <Link
+                to="/requests"
+                className="btn btn-ghost bg-blue-500 text-white text-lg"
+              >
                 Requests
               </Link>
-              <Link to="/profile" className="btn btn-ghost bg-blue-500 text-white text-lg">
+              <Link
+                to="/profile"
+                className="btn btn-ghost bg-blue-500 text-white text-lg"
+              >
                 Profile
               </Link>
-              <button onClick={handlelogout} className="btn bg-blue-500 text-white btn-ghost text-lg">
+              <button
+                onClick={handlelogout}
+                className="btn bg-blue-500 text-white btn-ghost text-lg"
+              >
                 Logout
               </button>
               <div className="avatar">
@@ -110,9 +131,10 @@ const NavBar = () => {
                   tabIndex={0}
                   className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
                 >
-                   <li>
+                  <li>
                     <Link to="/" className=" font-bold text-xl">
-Feeds                    </Link>
+                      Feeds{" "}
+                    </Link>
                   </li>
                   <li>
                     <Link to="connections" className=" font-bold text-xl">
@@ -125,12 +147,19 @@ Feeds                    </Link>
                     </Link>
                   </li>
                   <li>
-                    <Link to="/profile" className="justify-between font-bold text-xl">
+                    <Link
+                      to="/profile"
+                      className="justify-between font-bold text-xl"
+                    >
                       Profile
                     </Link>
                   </li>
                   <li>
-                    <Link to="/login" className="text-xl font-bold" onClick={handlelogout}>
+                    <Link
+                      to="/login"
+                      className="text-xl font-bold"
+                      onClick={handlelogout}
+                    >
                       Logout
                     </Link>
                   </li>

@@ -7,7 +7,7 @@ interface FeedItem {
   gender: string;
   age: number;
   photo?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 const feedSlice = createSlice({
@@ -20,9 +20,10 @@ const feedSlice = createSlice({
       const newArray = state.filter((r) => r._id !== action.payload);
       return newArray;
     },
+    clearFeed: () => [],
   },
 });
 
-export const { addFeed, removeFeed } = feedSlice.actions;
+export const { addFeed, removeFeed, clearFeed } = feedSlice.actions;
 
 export default feedSlice.reducer;
