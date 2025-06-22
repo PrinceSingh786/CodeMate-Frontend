@@ -12,10 +12,10 @@ const useSilentAuth = () => {
     const authenticateUser = async () => {
       try {
         // This request will succeed if the user has a valid cookie
-        const response = await axios.get(`${API_URL}/profile`, {
+        const response = await axios.get(`${API_URL}/feed`, {
           withCredentials: true,
         });
-        
+
         if (response.data.user) {
           dispatch(addUser(response.data.user));
         }
@@ -33,4 +33,4 @@ const useSilentAuth = () => {
   return loading;
 };
 
-export default useSilentAuth; 
+export default useSilentAuth;

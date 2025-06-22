@@ -36,7 +36,7 @@ const Connections = () => {
       <div>
         {error && <p className="text-red-500 text-center my-2">{error}</p>}
         {Array.isArray(users) && users.length > 0 ? (
-          users.map((user) => <Connection_Card user={user} />)
+          users.map((user) => <Connection_Card key={user._id} user={user} />)
         ) : (
           <p>No connections found.</p>
         )}
