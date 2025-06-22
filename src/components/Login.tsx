@@ -15,7 +15,7 @@ const Login = () => {
   const handleLogin = async () => {
     try {
       const res = await axios.post(
-        API_URL + "/login",
+      "code-mate-backend.vercel.app/login",
         {
           email,
           password,
