@@ -24,7 +24,7 @@ const Connection_Card = ({ user }: { user: User }) => {
 
         <div className="card-body w-4/12">
           <h1 className="card-title">
-            Name: <h1 className="font-thin">{name}</h1>
+            Name: <span className="font-thin">{name}</span>
           </h1>
           {age && (
             <div className="flex ">

@@ -21,10 +21,7 @@ const SignIn = () => {
       );
 
       //save user to localStorage and redux
-      localStorage.setItem("user", JSON.stringify(res.data.user));
-      dispatch(addUser(res.data.data));
-      seterror("");
-      settoast(true);
+      dispatch(addUser(res.data.user));
       setTimeout(() => {
         settoast(false);
         navigate("/");
