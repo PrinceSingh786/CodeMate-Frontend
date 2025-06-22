@@ -4,7 +4,7 @@ import { addUser } from "../Utils/userSlice.tsx";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-//import { API_URL } from "../Utils/constants.tsx";
+import { API_URL } from "../Utils/constants.tsx";
 import { Link } from "react-router-dom";
 const Login = () => {
   const [email, setEmail] = useState("shyam.adams44@example.com");
@@ -15,7 +15,7 @@ const Login = () => {
   const handleLogin = async () => {
     try {
       const res = await axios.post(
-      "code-mate-backend.vercel.app/login",
+      API_URL+"login",
         {
           email,
           password,
