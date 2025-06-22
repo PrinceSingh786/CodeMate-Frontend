@@ -1,2 +1,2 @@
 export const API_URL =
-  "http://localhost:3333"; // Replace with your actual API URL
+  "code-mate-backend.vercel.app"; // Replace with your actual API URL
